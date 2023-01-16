@@ -25,7 +25,7 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val localRepository: LocalRepository,
     private val remoteRepository: RemoteRepository,
-    val application: Application
+    private val application: Application
 ) : ViewModel() {
     private val _bibles = MutableStateFlow(emptyList<Bible>())
     val bibles = _bibles.asStateFlow()

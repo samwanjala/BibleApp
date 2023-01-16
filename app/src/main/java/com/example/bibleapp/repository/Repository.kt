@@ -2,7 +2,7 @@ package com.example.bibleapp.repository
 
 import com.example.bibleapp.data.*
 import com.example.bibleapp.database.*
-import com.example.bibleapp.network.BibleApiService
+import com.example.bibleapp.api.BibleApiService
 
 interface RemoteRepository {
     suspend fun getBibles(): List<Bible>

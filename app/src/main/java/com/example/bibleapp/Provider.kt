@@ -1,23 +1,18 @@
 package com.example.bibleapp
 
 import android.content.Context
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.room.Room
 import com.example.bibleapp.database.*
-import com.example.bibleapp.network.BibleApiService
+import com.example.bibleapp.api.BibleApiService
 import com.example.bibleapp.repository.LocalRepository
 import com.example.bibleapp.repository.LocalRepositoryImpl
 import com.example.bibleapp.repository.RemoteRepository
 import com.example.bibleapp.repository.RemoteRepositoryImp
-import com.example.bibleapp.viewmodel.MainViewModel
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.android.scopes.ViewModelScoped
 import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
 
 const val dbName = "Bible Database"
 

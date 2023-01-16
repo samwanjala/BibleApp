@@ -1,4 +1,4 @@
-package com.example.bibleapp.network
+package com.example.bibleapp.api
 
 import com.example.bibleapp.data.*
 import com.squareup.moshi.Moshi
