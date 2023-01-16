@@ -88,7 +88,7 @@ class MainViewModel @Inject constructor(
                     isLoading = false
                     isError = true
                 }
-                e.message?.let { Log.d("error", it) }
+                e.message?.let { Log.e("error", it) }
             }
         }
     }
@@ -131,7 +131,7 @@ class MainViewModel @Inject constructor(
                     isLoading = false
                     isError = true
                 }
-                e.message?.let { Log.d("error", it) }
+                e.message?.let { Log.e("error", it) }
             }
         }
     }
@@ -174,7 +174,7 @@ class MainViewModel @Inject constructor(
                     isLoading = false
                     isError = true
                 }
-                e.message?.let { Log.d("error", it) }
+                e.message?.let { Log.e("error", it) }
             }
         }
     }
@@ -218,7 +218,7 @@ class MainViewModel @Inject constructor(
                     isLoading = false
                     isError = true
                 }
-                e.message?.let { Log.d("error", it) }
+                e.message?.let { Log.e("error", it) }
             }
         }
     }
@@ -235,7 +235,7 @@ class MainViewModel @Inject constructor(
                 withContext(Dispatchers.Main) {
                     isLoading = false
                 }
-                e.message?.let { Log.d("error", it) }
+                e.message?.let { Log.e("error", it) }
             }
         }
     }

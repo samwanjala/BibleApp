@@ -20,7 +20,6 @@ interface ConnectivityStateObserver{
 }
 class ConnectivityStateObserverImpl(context: Context): ConnectivityStateObserver{
     private val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-    @RequiresApi(Build.VERSION_CODES.N)
     override fun observe(): Flow<ConnectivityStateObserver.ConnectivityState> {
         return callbackFlow {
             val callback = object: ConnectivityManager.NetworkCallback() {
