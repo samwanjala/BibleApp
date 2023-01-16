@@ -43,7 +43,7 @@ data class VerseContentTable(
     version = 2,
     exportSchema = false
 )
-abstract class BibleDatabase: RoomDatabase() {
+abstract class BibleDatabase : RoomDatabase() {
     abstract fun bookDao(): BookDao
     abstract fun chapterDao(): ChapterDao
     abstract fun verseDao(): VerseDao
@@ -51,7 +51,7 @@ abstract class BibleDatabase: RoomDatabase() {
 }
 
 @Dao
-interface BookDao{
+interface BookDao {
     @Query("SELECT * FROM $BOOK_TABLE")
     fun getBooks(): List<BookTable>
 
@@ -60,7 +60,7 @@ interface BookDao{
 }
 
 @Dao
-interface ChapterDao{
+interface ChapterDao {
     @Query("SELECT * FROM $CHAPTER_TABLE WHERE book_id = :bookId")
     fun getChapters(bookId: String): List<ChapterTable>
 
@@ -69,7 +69,7 @@ interface ChapterDao{
 }
 
 @Dao
-interface VerseDao{
+interface VerseDao {
     @Query("SELECT * FROM $VERSE_TABLE WHERE chapter_id = :chapterId")
     fun getVerses(chapterId: String): List<VerseTable>
 
@@ -78,8 +78,12 @@ interface VerseDao{
 }
 
 @Dao
-interface VerseContentDao{
-    @Query("SELECT * FROM $VERSE_CONTENT_TABLE WHERE verse_id = :verseId")
+interface VerseContentDao {
+    @Query(
+        """SELECT * FROM $VERSE_CONTENT_TABLE
+    WHERE verse_id LIKE '%' || :verseId || '%'
+    """
+    )
     fun getVerseContent(verseId: String): VerseContentTable?
 
     @Insert(onConflict = REPLACE)

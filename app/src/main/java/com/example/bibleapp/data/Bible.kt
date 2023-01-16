@@ -63,11 +63,11 @@ data class VerseContentData(
 
 @Keep
 data class VerseContent(
-    val id: String?,
-    val content: String?,
-    val verseCount: String?,
-    val next: NextVerse?,
-    val previous: PreviousVerse?
+    val id: String? = null,
+    val content: String? = null,
+    val verseCount: String? = null,
+    val next: NextVerse? = null,
+    val previous: PreviousVerse? = null
 )
 
 @Keep

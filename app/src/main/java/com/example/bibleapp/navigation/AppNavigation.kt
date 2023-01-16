@@ -1,6 +1,5 @@
 package com.example.bibleapp.navigation
 
-import android.util.Log
 import androidx.compose.animation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -136,35 +135,47 @@ fun AppNavigation(
                 }
 
                 val unformattedVerse = backStackEntry.arguments?.getString("verse") ?: ""
-                var verse by remember {
-                    mutableStateOf(unformattedVerse.substringAfter(':').toInt())
+                var verseNumber by remember {
+                    mutableStateOf(unformattedVerse.substringAfter(':', "no verse").toVerseNumber())
                 }
 
                 val verseContent = viewModel.verseContent.collectAsState().value
                 bookName = backStackEntry.arguments?.getString("bookName") ?: ""
                 chapter = backStackEntry.arguments?.getString("chapter") ?: ""
 
-                leftHeader = "$bookName $chapter:${verse}"
-
-                Log.d("verse", "$verse")
+                leftHeader = if (verseNumber == 0) {
+                    "$bookName $chapter"
+                } else {
+                    "$bookName $chapter:${verseNumber}"
+                }
 
                 VerseContentPage(
                     verseContent = verseContent,
                     onClickPrevious = {
-                        verseContent.previous?.id?.let { previousVerseId ->
-                            viewModel.getVerseContent(
-                                verseId = previousVerseId
-                            )
+                        if (verseNumber != 0) {
+                            verseContent.previous?.id?.let { previousVerseId ->
+                                viewModel.getVerseContent(
+                                    verseId = previousVerseId
+                                )
+                                viewModel.verseIdForRequestedVerseContent = previousVerseId
+                            }
+                            if (viewModel.isConnected || viewModel.isLocallyCached) {
+                                verseNumber -= 1
+                            }
                         }
-                        verse -= 1
                     },
                     onClickNext = {
-                        verseContent.next?.id?.let { nextVerseId ->
-                            viewModel.getVerseContent(
-                                verseId = nextVerseId
-                            )
+                        if (verseNumber != 0) {
+                            verseContent.next?.id?.let { nextVerseId ->
+                                viewModel.getVerseContent(
+                                    verseId = nextVerseId
+                                )
+                                viewModel.verseIdForRequestedVerseContent = nextVerseId
+                            }
+                            if (viewModel.isConnected || viewModel.isLocallyCached) {
+                                verseNumber += 1
+                            }
                         }
-                        verse += 1
                     },
                     viewModel = viewModel
                 )
@@ -172,6 +183,8 @@ fun AppNavigation(
         }
     }
 }
+
+fun String.toVerseNumber() = if (this == "no verse") 0 else this.toInt()
 
 class Destinations {
     companion object {

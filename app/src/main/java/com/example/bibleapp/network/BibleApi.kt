@@ -54,23 +54,6 @@ interface BibleService {
         @Path("verseId") verseID: String,
         @Query("content-type") contentType: String = "text",
     ): VerseContentData
-
-    @Headers(header)
-    @GET("bibles/{bibleId}/chapters/{chapterId}/sections")
-    suspend fun getSections(
-        @Path("bibleId") bibleID: String = "de4e12af7f28f599-02",
-        @Path("chapterId") chapterId: String
-    ): SectionData
-
-    @Headers(header)
-    @GET("bibles/{bibleId}/sections/{sectionId}")
-    suspend fun getSectionContent(
-        @Path("bibleId") bibleID: String,
-        @Path("sectionId") sectionId: String,
-        @Query("content-type") contentType: String = "text",
-        @Query("include-titles") includeTitles: Boolean = true,
-    ): SectionContentData
-
 }
 
 object BibleApiService {

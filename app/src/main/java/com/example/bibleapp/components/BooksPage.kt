@@ -39,53 +39,10 @@ fun BooksPage(
         )
     }
 
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        if(
-            viewModel.isLoading
-        ) {
-            CircularProgressIndicator()
-        }
+    UIState(viewModel = viewModel)
 
-        if (
-            !viewModel.isConnected
-        ){
-            Column(
-                verticalArrangement = Arrangement.SpaceAround,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Icon(
-                    imageVector = Icons.Rounded.WifiOff,
-                    contentDescription = null,
-                    modifier = Modifier.size(50.dp)
-                )
-                Text(text = "No internet connection")
-            }
-        }
-
-        if (
-            viewModel.isError && viewModel.isConnected
-        ){
-            Column(
-                verticalArrangement = Arrangement.SpaceAround,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Icon(
-                    imageVector = Icons.Rounded.Error,
-                    contentDescription = null,
-                    modifier = Modifier.size(50.dp)
-                )
-                Text(text = "Something went wrong")
-            }
-        }
-
-        LaunchedEffect(key1 = viewModel.isConnected){
-            if (viewModel.isConnected && books.isEmpty()){
-                viewModel.getBooks()
-            }
-        }
+    LaunchedEffect(key1 = viewModel.isConnected) {
+        viewModel.getBooks()
     }
 }
 

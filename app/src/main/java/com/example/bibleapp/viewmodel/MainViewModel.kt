@@ -34,15 +34,7 @@ class MainViewModel @Inject constructor(
     val chapters = _chapters.asStateFlow()
     private val _verses = MutableStateFlow(emptyList<Verse>())
     val verses = _verses.asStateFlow()
-    private val _verseContent = MutableStateFlow(
-        VerseContent(
-            id = null,
-            content = null,
-            verseCount = null,
-            next = null,
-            previous = null
-        )
-    )
+    private val _verseContent = MutableStateFlow(VerseContent())
     val verseContent = _verseContent.asStateFlow()
     var isLoading by mutableStateOf(false)
     var isError by mutableStateOf(false)
@@ -50,10 +42,11 @@ class MainViewModel @Inject constructor(
     var isLoadingChaptersFromRemote by mutableStateOf(false)
     var isLoadingVersesFromRemote by mutableStateOf(false)
     var isLoadingVerseContentFromRemote by mutableStateOf(false)
-    var isConnected by mutableStateOf(true)
+    var isConnected by mutableStateOf(false)
     var chapterIdForRequestedVerse = ""
     var bookIdForRequestedChapter = ""
     var verseIdForRequestedVerseContent = ""
+    var isLocallyCached by mutableStateOf(false)
 
     init {
         viewModelScope.launch {
@@ -72,13 +65,13 @@ class MainViewModel @Inject constructor(
                 var bookList = localRepository.getBooks()
 
                 if (bookList.isNotEmpty()) {
-                    Log.d("isEmpty", "is not empty")
+                    isLocallyCached = true
                     withContext(Dispatchers.Main) {
                         isLoadingBooksFromRemote = false
                     }
                     _books.value = bookList
                 } else {
-                    Log.d("isEmpty", "is empty")
+                    isLocallyCached = false
                     withContext(Dispatchers.Main) {
                         isLoadingBooksFromRemote = true
                     }
@@ -113,11 +106,14 @@ class MainViewModel @Inject constructor(
                 var chapterList = localRepository.getChapters(bookId)
 
                 if (chapterList.isNotEmpty()) {
+                    isLocallyCached = true
                     withContext(Dispatchers.Main) {
                         isLoadingBooksFromRemote = false
                     }
                     _chapters.value = chapterList
                 } else {
+                    isLocallyCached = false
+                    _chapters.value = emptyList()
                     withContext(Dispatchers.Main) {
                         isLoadingBooksFromRemote = true
                     }
@@ -153,11 +149,14 @@ class MainViewModel @Inject constructor(
                 var verseList = localRepository.getVerses(chapterId)
 
                 if (verseList.isNotEmpty()) {
+                    isLocallyCached = true
                     withContext(Dispatchers.Main) {
                         isLoadingBooksFromRemote = false
                     }
                     _verses.value = verseList
                 } else {
+                    isLocallyCached = false
+                    _verses.value = emptyList()
                     withContext(Dispatchers.Main) {
                         isLoadingBooksFromRemote = true
                     }
@@ -194,18 +193,21 @@ class MainViewModel @Inject constructor(
                 }
                 var verseCont = localRepository.getVerseContent(verseId = verseId)
                 if (verseCont != null){
+                    isLocallyCached = true
                     withContext(Dispatchers.Main) {
                         isLoadingBooksFromRemote = false
                     }
                     Log.d("is null", "not null")
                     _verseContent.value = verseCont
                 } else {
-                    Log.d("is null", "is null")
+                    isLocallyCached = false
+                    _verseContent.value = VerseContent()
                     withContext(Dispatchers.Main) {
                         isLoadingBooksFromRemote = true
                     }
                     verseCont = remoteRepository.getVerseContent(verseId = verseId)
                     _verseContent.value = verseCont
+                    saveVerseContent(verseCont)
                 }
                 withContext(Dispatchers.Main) {
                     isLoading = false
@@ -216,9 +218,13 @@ class MainViewModel @Inject constructor(
                     isLoading = false
                     isError = true
                 }
-                throw e
+                e.message?.let { Log.d("error", it) }
             }
         }
+    }
+
+    private suspend fun saveVerseContent(verseContent: VerseContent) {
+        localRepository.insertVerseContent(verseContent)
     }
 
     private fun deleteAllVerses() {
@@ -232,9 +238,5 @@ class MainViewModel @Inject constructor(
                 e.message?.let { Log.d("error", it) }
             }
         }
-    }
-
-    private suspend fun saveVerseContent(verseContent: VerseContent) {
-        localRepository.insertVerseContent(verseContent)
     }
 }

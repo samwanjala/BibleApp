@@ -8,42 +8,28 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Error
 import androidx.compose.material.icons.rounded.WifiOff
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.bibleapp.data.VerseContent
 import com.example.bibleapp.viewmodel.MainViewModel
 
 @Composable
-fun VerseContentPage(
-    verseContent: VerseContent,
-    onClickPrevious:() -> Unit,
-    viewModel: MainViewModel,
-    onClickNext:() -> Unit,
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 8.dp)
-    ) {
-        Spacer(modifier = Modifier.height(8.dp))
-        verseContent.content?.let { Text(text = it) }
-    }
-
+fun UIState(
+    viewModel: MainViewModel
+){
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        if(
-            viewModel.isLoading
+        if (
+            viewModel.isLoading && viewModel.isConnected || viewModel.isLoading && viewModel.isLocallyCached
         ) {
             CircularProgressIndicator()
         }
 
         if (
-            !viewModel.isConnected
-        ){
+            !viewModel.isConnected && !viewModel.isLocallyCached
+        ) {
             Column(
                 verticalArrangement = Arrangement.SpaceAround,
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -58,8 +44,8 @@ fun VerseContentPage(
         }
 
         if (
-            viewModel.isError && viewModel.isConnected
-        ){
+            viewModel.isError && viewModel.isConnected && !viewModel.isLoading
+        ) {
             Column(
                 verticalArrangement = Arrangement.SpaceAround,
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -72,20 +58,5 @@ fun VerseContentPage(
                 Text(text = "Something went wrong")
             }
         }
-
-        LaunchedEffect(key1 = viewModel.isConnected){
-            if (viewModel.isConnected && verseContent.content == null){
-                viewModel.getVerseContent(verseId = viewModel.verseIdForRequestedVerseContent)
-            }
-        }
     }
-
-    BottomBar(
-        onClickNext = {
-            onClickNext()
-        },
-        onClickPrevious = {
-            onClickPrevious()
-        }
-    )
 }
