@@ -16,6 +16,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -69,14 +70,14 @@ class MainViewModel @Inject constructor(
                     withContext(Dispatchers.Main) {
                         isLoadingBooksFromRemote = false
                     }
-                    _books.value = bookList
+                    _books.update { bookList }
                 } else {
                     isLocallyCached = false
                     withContext(Dispatchers.Main) {
                         isLoadingBooksFromRemote = true
                     }
                     bookList = remoteRepository.getBooks()
-                    _books.value = bookList
+                    _books.update { bookList }
                     saveBooks(bookList)
                 }
                 withContext(Dispatchers.Main) {
@@ -110,18 +111,17 @@ class MainViewModel @Inject constructor(
                     withContext(Dispatchers.Main) {
                         isLoadingBooksFromRemote = false
                     }
-                    _chapters.value = chapterList
+                    _chapters.update { chapterList }
                 } else {
                     isLocallyCached = false
-                    _chapters.value = emptyList()
+                    _chapters.update { emptyList() }
                     withContext(Dispatchers.Main) {
                         isLoadingBooksFromRemote = true
                     }
                     chapterList = remoteRepository.getChapters(bookId = bookId)
-                    _chapters.value = chapterList
+                    _chapters.update{ chapterList }
                     saveChapters(chapterList)
                 }
-                _chapters.value = chapterList
                 withContext(Dispatchers.Main) {
                     isLoading = false
                     isError = false
@@ -153,18 +153,17 @@ class MainViewModel @Inject constructor(
                     withContext(Dispatchers.Main) {
                         isLoadingBooksFromRemote = false
                     }
-                    _verses.value = verseList
+                    _verses.update { verseList }
                 } else {
                     isLocallyCached = false
-                    _verses.value = emptyList()
+                    _verses.update { emptyList() }
                     withContext(Dispatchers.Main) {
                         isLoadingBooksFromRemote = true
                     }
                     verseList = remoteRepository.getVerses(chapterId = chapterId)
-                    _verses.value = verseList
+                    _verses.update { verseList }
                     saveVerses(verseList)
                 }
-                _verses.value = verseList
                 withContext(Dispatchers.Main) {
                     isLoading = false
                     isError = false
@@ -197,16 +196,15 @@ class MainViewModel @Inject constructor(
                     withContext(Dispatchers.Main) {
                         isLoadingBooksFromRemote = false
                     }
-                    Log.d("is null", "not null")
-                    _verseContent.value = verseCont
+                    _verseContent.update { verseCont!! }
                 } else {
                     isLocallyCached = false
-                    _verseContent.value = VerseContent()
+                    _verseContent.update { VerseContent() }
                     withContext(Dispatchers.Main) {
                         isLoadingBooksFromRemote = true
                     }
                     verseCont = remoteRepository.getVerseContent(verseId = verseId)
-                    _verseContent.value = verseCont
+                    _verseContent.update { verseCont }
                     saveVerseContent(verseCont)
                 }
                 withContext(Dispatchers.Main) {
