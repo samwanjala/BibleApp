@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">BibleApp</string>
+    <string name="title_book">book</string>
+    <string name="title_chapter">Chapter</string>
+    <string name="title_verse">Verse</string>
+    <string name="title_versecontent">Versecontent</string>
 </resources>

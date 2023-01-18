@@ -36,7 +36,7 @@ android {
 
 dependencies {
 
-   // implementation(project(mapOf("path" to ":app")))
+//    implementation(project(mapOf("path" to ":app")))
 //    implementation("androidx.core:core-ktx:1.7.0")
 //    implementation("androidx.appcompat:appcompat:1.4.1")
 //    implementation("com.google.android.material:material:1.5.0")
@@ -46,8 +46,8 @@ dependencies {
 
     //implementation(project(mapOf("path" to ":lib:data")))
     // Dagger - Hilt
-    implementation("com.google.dagger:hilt-android:2.44")
+    api("com.google.dagger:hilt-android:2.44")
     kapt("com.google.dagger:hilt-android-compiler:2.44")
     kapt("androidx.hilt:hilt-compiler:1.0.0")
-    implementation ("androidx.hilt:hilt-navigation-compose:1.0.0")
+    api ("androidx.hilt:hilt-navigation-compose:1.0.0")
 }

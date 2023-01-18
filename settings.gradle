@@ -16,3 +16,8 @@ rootProject.name = "BibleApp"
 include ':app'
 include ':lib:data'
 include ':lib:domain'
+include ':feature:book'
+include ':feature:chapter'
+include ':feature:verse'
+include ':feature:versecontent'
+include ':lib:core'

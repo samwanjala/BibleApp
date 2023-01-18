@@ -7,8 +7,15 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.navArgument
+import com.example.bibleapp.book.ui.component.BooksPage
+import com.example.bibleapp.book.ui.viewmodel.BookViewModel
+import com.example.bibleapp.chapter.ui.component.ChaptersPage
+import com.example.bibleapp.chapter.ui.viewmodel.ChapterViewModel
+import com.example.bibleapp.verse.ui.component.VersesPage
+import com.example.bibleapp.verse.ui.viewmodel.VerseViewModel
+import com.example.bibleapp.versecontent.ui.component.VerseContentPage
+import com.example.bibleapp.versecontent.ui.viewmodel.VerseContentViewModel
 import com.example.bibleapp.viewmodel.MainViewModel
-import com.example.bibleapp.components.*
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
@@ -16,7 +23,10 @@ import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun AppNavigation(
-    viewModel: MainViewModel
+    bookViewModel: BookViewModel,
+    chapterViewModel: ChapterViewModel,
+    verseViewModel: VerseViewModel,
+    verseContentViewModel: VerseContentViewModel
 ) {
     val navHostController = rememberAnimatedNavController()
     var leftHeader by remember {
@@ -62,14 +72,14 @@ fun AppNavigation(
             ) {
                 leftHeader = ""
                 BooksPage(
-                    viewModel = viewModel,
+                    viewModel = bookViewModel,
                     onClickItem = { _, bookId, bookName ->
                         navHostController.navigate(
                             route = "${Destinations.chaptersPage}/$bookName"
                         ) {
                             launchSingleTop = true
                         }
-                        viewModel.bookIdForRequestedChapter = bookId
+                        bookViewModel.bookIdForRequestedChapter = bookId
                     }
                 )
             }
@@ -86,14 +96,14 @@ fun AppNavigation(
                 val bookName = backStackEntry.arguments?.getString("bookName") ?: "Book"
                 leftHeader = bookName
                 ChaptersPage(
-                    viewModel = viewModel,
+                    viewModel = chapterViewModel,
                     onClickItem = { _, chapterId, chapter ->
                         navHostController.navigate(
                             route = "${Destinations.versesPage}/$bookName/$chapter"
                         ) {
                             launchSingleTop = true
                         }
-                        viewModel.chapterIdForRequestedVerse = chapterId
+                        chapterViewModel.chapterIdForRequestedVerse = chapterId
                     }
                 )
             }
@@ -111,14 +121,14 @@ fun AppNavigation(
                 val chapter = backStackEntry.arguments?.getString("chapter") ?: ""
                 leftHeader = "$bookName $chapter"
                 VersesPage(
-                    viewModel = viewModel,
+                    viewModel = verseViewModel,
                     onClickItem = { _, verseId, verse ->
                         navHostController.navigate(
                             route = "${Destinations.verseContentPage}/$verse/$chapter/$bookName"
                         ) {
                             launchSingleTop = true
                         }
-                        viewModel.verseIdForRequestedVerseContent = verseId
+                        verseViewModel.verseIdForRequestedVerseContent = verseId
                     }
                 )
             }
@@ -145,7 +155,7 @@ fun AppNavigation(
                     mutableStateOf(unformattedVerse.substringAfter(':', "no verse").toVerseNumber())
                 }
 
-                val verseContent = viewModel.verseContent.collectAsState().value
+                val verseContent = verseContentViewModel.verseContent.collectAsState().value
                 bookName = backStackEntry.arguments?.getString("bookName") ?: ""
                 chapter = backStackEntry.arguments?.getString("chapter") ?: ""
 
@@ -155,17 +165,17 @@ fun AppNavigation(
                     "$bookName $chapter:${verseNumber}"
                 }
 
-                VerseContentPage(
+                 VerseContentPage(
                     verseContent = verseContent,
                     onClickPrevious = {
                         if (verseNumber != 0) {
                             verseContent.previous?.id?.let { previousVerseId ->
-                                viewModel.getVerseContent(
+                                verseContentViewModel.getVerseContent(
                                     verseId = previousVerseId
                                 )
-                                viewModel.verseIdForRequestedVerseContent = previousVerseId
+                                verseContentViewModel.verseIdForRequestedVerseContent = previousVerseId
                             }
-                            if (viewModel.isConnected || viewModel.isLocallyCached) {
+                            if (verseContentViewModel.isConnected || verseContentViewModel.isLocallyCached) {
                                 verseNumber -= 1
                             }
                         }
@@ -173,17 +183,17 @@ fun AppNavigation(
                     onClickNext = {
                         if (verseNumber != 0) {
                             verseContent.next?.id?.let { nextVerseId ->
-                                viewModel.getVerseContent(
+                                verseContentViewModel.getVerseContent(
                                     verseId = nextVerseId
                                 )
-                                viewModel.verseIdForRequestedVerseContent = nextVerseId
+                                verseContentViewModel.verseIdForRequestedVerseContent = nextVerseId
                             }
-                            if (viewModel.isConnected || viewModel.isLocallyCached) {
+                            if (verseContentViewModel.isConnected || verseContentViewModel.isLocallyCached) {
                                 verseNumber += 1
                             }
                         }
                     },
-                    viewModel = viewModel
+                    viewModel = verseContentViewModel
                 )
             }
         }

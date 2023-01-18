@@ -1,4 +1,4 @@
-package com.example.bibleapp.components
+package com.example.bibleapp.verse.ui.component
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.CircularProgressIndicator
@@ -11,11 +11,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.bibleapp.viewmodel.MainViewModel
+import com.example.bibleapp.verse.ui.viewmodel.VerseViewModel
 
 @Composable
 fun UIState(
-    viewModel: MainViewModel
+    viewModel: VerseViewModel
 ){
     Box(
         modifier = Modifier.fillMaxSize(),

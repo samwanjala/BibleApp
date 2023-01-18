@@ -1,9 +1,9 @@
 plugins {
-    id ("com.android.application")
-    id ("org.jetbrains.kotlin.android")
-    id ("kotlin-kapt")
-    id ("kotlin-parcelize")
-    id ("dagger.hilt.android.plugin")
+    id("com.android.application")
+    id("org.jetbrains.kotlin.android")
+//    id("kotlin-kapt")
+    id("kotlin-parcelize")
+//    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -26,13 +26,16 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = true
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
             signingConfig = signingConfigs.getByName("debug")
         }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility =JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
     kotlinOptions {
         jvmTarget = "1.8"
@@ -45,58 +48,23 @@ android {
     }
     packagingOptions {
         resources {
-            exclude ("/META-INF/{AL2.0,LGPL2.1}")
+            exclude("/META-INF/{AL2.0,LGPL2.1}")
         }
     }
+    dynamicFeatures += setOf(
+        ":feature:book",
+        ":feature:chapter",
+        ":feature:verse",
+        ":feature:versecontent"
+    )
 }
 
 dependencies {
 
-    implementation ("androidx.core:core-ktx:1.9.0")
-    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
-    implementation ("androidx.activity:activity-compose:1.6.1")
-    implementation ("androidx.compose.ui:ui:1.3.3")
-    implementation ("androidx.compose.ui:ui-tooling-preview:1.3.3")
-    implementation ("androidx.compose.material:material:1.3.1")
-    implementation ("androidx.compose.material:material-icons-extended:1.3.1")
-    implementation ("androidx.constraintlayout:constraintlayout-compose:1.0.1")
-    implementation(project(mapOf("path" to ":lib:data")))
-    implementation(project(mapOf("path" to ":lib:domain")))
-    testImplementation ("junit:junit:4.13.2")
-    androidTestImplementation ("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation ("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation ("androidx.compose.ui:ui-test-junit4:1.3.3")
-    debugImplementation ("androidx.compose.ui:ui-tooling:1.3.3")
-    debugImplementation ("androidx.compose.ui:ui-test-manifest:1.3.3")
+    api(project(mapOf("path" to ":lib:core")))
 
-    //accompanist-systemUiController
-    implementation("com.google.accompanist:accompanist-systemuicontroller:0.28.0")
-    implementation("com.google.accompanist:accompanist-navigation-animation:0.28.0")
+    api(project(mapOf("path" to ":lib:data")))
+    api(project(mapOf("path" to ":lib:domain")))
 
-//    // Retrofit
-//    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-//
-//    //Moshi
-//    implementation("com.squareup.moshi:moshi-kotlin:1.13.0")
-//
-//    // Retrofit with Moshi Converter
-//    implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
-//
-//    //animated navigation
-//
-//
-//    //room
-//    implementation ("androidx.room:room-runtime:2.5.0")
-//    kapt ("androidx.room:room-compiler:2.5.0")
-//    implementation ("androidx.room:room-ktx:2.5.0")
-//
-    // Dagger - Hilt
-    implementation("com.google.dagger:hilt-android:2.44")
-    kapt("com.google.dagger:hilt-android-compiler:2.44")
-    kapt("androidx.hilt:hilt-compiler:1.0.0")
-    implementation ("androidx.hilt:hilt-navigation-compose:1.0.0"
-   )
 
-    //work manager
-    implementation ("androidx.work:work-runtime-ktx:2.7.1")
 }
