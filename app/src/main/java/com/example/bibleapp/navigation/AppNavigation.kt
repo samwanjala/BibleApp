@@ -52,6 +52,12 @@ fun AppNavigation(
         ) {
             composable(
                 route = Destinations.booksPage,
+                enterTransition = {
+                    slideIntoContainer(AnimatedContentScope.SlideDirection.Down)
+                },
+                exitTransition = {
+                    slideOutOfContainer(AnimatedContentScope.SlideDirection.Up)
+                },
                 arguments = listOf(navArgument("bookName") {})
             ) {
                 leftHeader = ""
