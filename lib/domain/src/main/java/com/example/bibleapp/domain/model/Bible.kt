@@ -1,4 +1,4 @@
-package com.example.bibleapp.data
+package com.example.bibleapp.domain.model
 
 import androidx.annotation.Keep
 

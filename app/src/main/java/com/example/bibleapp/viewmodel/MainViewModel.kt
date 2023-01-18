@@ -7,9 +7,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.bibleapp.data.*
-import com.example.bibleapp.repository.LocalRepository
-import com.example.bibleapp.repository.RemoteRepository
+import com.example.bibleapp.domain.model.*
+
+import com.example.bibleapp.domain.repository.LocalRepository
+import com.example.bibleapp.domain.repository.RemoteRepository
+
 import com.example.bibleapp.util.ConnectivityStateObserver
 import com.example.bibleapp.util.ConnectivityStateObserverImpl
 import dagger.hilt.android.lifecycle.HiltViewModel

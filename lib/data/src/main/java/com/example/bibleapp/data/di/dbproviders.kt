@@ -1,13 +1,18 @@
-package com.example.bibleapp
+package com.example.bibleapp.data.di
 
 import android.content.Context
 import androidx.room.Room
-import com.example.bibleapp.database.*
-import com.example.bibleapp.api.BibleApiService
-import com.example.bibleapp.repository.LocalRepository
-import com.example.bibleapp.repository.LocalRepositoryImpl
-import com.example.bibleapp.repository.RemoteRepository
-import com.example.bibleapp.repository.RemoteRepositoryImp
+import com.example.bibleapp.data.database.BibleDatabase
+import com.example.bibleapp.data.database.daos.BookDao
+import com.example.bibleapp.data.database.daos.ChapterDao
+import com.example.bibleapp.data.database.daos.VerseContentDao
+import com.example.bibleapp.data.database.daos.VerseDao
+import com.example.bibleapp.data.network.BibleApiService
+import com.example.bibleapp.data.repository.LocalRepositoryImpl
+import com.example.bibleapp.data.repository.RemoteRepositoryImp
+import com.example.bibleapp.domain.repository.LocalRepository
+import com.example.bibleapp.domain.repository.RemoteRepository
+
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

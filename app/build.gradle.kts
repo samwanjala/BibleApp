@@ -60,6 +60,8 @@ dependencies {
     implementation ("androidx.compose.material:material:1.3.1")
     implementation ("androidx.compose.material:material-icons-extended:1.3.1")
     implementation ("androidx.constraintlayout:constraintlayout-compose:1.0.1")
+    implementation(project(mapOf("path" to ":lib:data")))
+    implementation(project(mapOf("path" to ":lib:domain")))
     testImplementation ("junit:junit:4.13.2")
     androidTestImplementation ("androidx.test.ext:junit:1.1.5")
     androidTestImplementation ("androidx.test.espresso:espresso-core:3.5.1")
@@ -69,29 +71,31 @@ dependencies {
 
     //accompanist-systemUiController
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.28.0")
-
-    // Retrofit
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-
-    //Moshi
-    implementation("com.squareup.moshi:moshi-kotlin:1.13.0")
-
-    // Retrofit with Moshi Converter
-    implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
-
-    //animated navigation
     implementation("com.google.accompanist:accompanist-navigation-animation:0.28.0")
 
-    //room
-    implementation ("androidx.room:room-runtime:2.5.0")
-    kapt ("androidx.room:room-compiler:2.5.0")
-    implementation ("androidx.room:room-ktx:2.5.0")
-
+//    // Retrofit
+//    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+//
+//    //Moshi
+//    implementation("com.squareup.moshi:moshi-kotlin:1.13.0")
+//
+//    // Retrofit with Moshi Converter
+//    implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
+//
+//    //animated navigation
+//
+//
+//    //room
+//    implementation ("androidx.room:room-runtime:2.5.0")
+//    kapt ("androidx.room:room-compiler:2.5.0")
+//    implementation ("androidx.room:room-ktx:2.5.0")
+//
     // Dagger - Hilt
-    implementation ("com.google.dagger:hilt-android:2.42")
-    kapt ("com.google.dagger:hilt-android-compiler:2.42")
-    kapt ("androidx.hilt:hilt-compiler:1.0.0")
-    implementation ("androidx.hilt:hilt-navigation-compose:1.0.0")
+    implementation("com.google.dagger:hilt-android:2.44")
+    kapt("com.google.dagger:hilt-android-compiler:2.44")
+    kapt("androidx.hilt:hilt-compiler:1.0.0")
+    implementation ("androidx.hilt:hilt-navigation-compose:1.0.0"
+   )
 
     //work manager
     implementation ("androidx.work:work-runtime-ktx:2.7.1")
