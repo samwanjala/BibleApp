@@ -1,6 +1,7 @@
-package com.example.bibleapp.api
+package com.example.bibleapp.data.network
 
 import com.example.bibleapp.data.*
+import com.example.bibleapp.domain.model.*
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Retrofit
